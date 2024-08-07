@@ -39,8 +39,8 @@
 
 ## Features
 
-- [ ] real-time safety helmet detection
-- [ ] alarm activation when a person wearing a helmet is detected
+- [x] real-time safety helmet detection
+- [x] alarm activation when a person wearing a helmet is detected
 
 
 
