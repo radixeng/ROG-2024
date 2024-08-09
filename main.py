@@ -2,6 +2,8 @@ from time import time
 
 import cv2
 import torch
+import os
+import sys
 
 from ultralytics import YOLO
 from ultralytics.utils.plotting import Annotator, colors
@@ -15,6 +17,11 @@ def send_email(object_detected=1):
     mixer.music.play()
     print("alarm")
 
+def resource_path(relative_path):
+    """ Get absolute path to resource, works for dev and for PyInstaller """
+    base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
+    return os.path.join(base_path, relative_path)
+
 
 class ObjectDetection:
     def __init__(self, capture_index):
@@ -23,7 +30,8 @@ class ObjectDetection:
         self.email_sent = False
 
         # model information
-        self.model = YOLO("best.pt")
+        model_path = resource_path("best.pt")
+        self.model = YOLO(model_path)
 
         # visual information
         self.annotator = None
@@ -35,7 +43,8 @@ class ObjectDetection:
 
     def predict(self, im0):
         """Run prediction using a YOLO model for the input image `im0`."""
-        results = self.model(im0)
+        CONFIDENCE = 0.55  # 0.35
+        results = self.model(im0, conf=CONFIDENCE)
         return results
 
     def display_fps(self, im0):
